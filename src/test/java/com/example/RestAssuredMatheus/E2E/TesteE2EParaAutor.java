@@ -6,6 +6,8 @@ import org.junit.jupiter.api.*;
 
 import java.time.Year;
 
+import javax.net.ssl.HttpsURLConnection;
+
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
