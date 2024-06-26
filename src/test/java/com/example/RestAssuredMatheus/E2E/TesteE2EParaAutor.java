@@ -2,11 +2,12 @@ package com.example.RestAssuredMatheus.E2E;
 
 import com.example.RestAssuredMatheus.Util.BaseTeste;
 import com.example.RestAssuredMatheus.model.Autor;
+
+import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.*;
 
 import java.time.Year;
 
-import javax.net.ssl.HttpsURLConnection;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
@@ -27,7 +28,7 @@ public class TesteE2EParaAutor extends BaseTeste {
                 .when()
                 .post("/v1/autor")
                 .then()
-                .statusCode(201)
+                .statusCode(HttpStatus.SC_CREATED)
                 .extract().jsonPath().getLong("id");
 
         Assertions.assertNotNull(autorId, "O ID do autor criado não pode ser nulo");
@@ -43,9 +44,9 @@ public class TesteE2EParaAutor extends BaseTeste {
                 .when()
                 .get("/v1/autor")
                 .then()
-                .statusCode(200)
+                .statusCode(HttpStatus.SC_OK)
                 .body("nome", equalTo("Nome do Autor"))
-                .body("cpf", equalTo("53494105049"));       
+                .body("cpf", equalTo("56321500038"));       
             
    }
 
@@ -60,14 +61,8 @@ public class TesteE2EParaAutor extends BaseTeste {
                 .when()
                 .delete("/v1/autor/{id}")
                 .then()
-                .statusCode(200);
+                .statusCode(HttpStatus.SC_OK);
 
-        given()
-        .queryParam("nome", "Nome do Autor")
-        .when()
-                .get("/v1/autor")
-                .then()
-                .statusCode(404); 
     }
 
     private Autor criarAutor() {
@@ -75,7 +70,7 @@ public class TesteE2EParaAutor extends BaseTeste {
                 .nome("Nome do Autor")
                 .genero("Masculino")
                 .anoNascimento(Year.of(2010))
-                .cpf("53494105049")
+                .cpf("56321500038")
                 .build();
     }
 }

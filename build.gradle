@@ -1,6 +1,7 @@
 plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.3.0'
+	id 'io.qameta.allure' version '2.9.6'
 	id 'io.spring.dependency-management' version '1.1.5'
 }
 
@@ -19,9 +20,23 @@ configurations {
 	}
 }
 
+
+allprojects {
+    tasks.withType(JavaCompile) {
+        options.compilerArgs << "-Xlint:none"
+    }
+}
+
 repositories {
 	mavenCentral()
 }
+
+task cleanAllureResults(type: Delete) {
+    delete 'allure-results'
+}
+
+compileJava.options.encoding = "UTF-8"
+compileTestJava.options.encoding = "UTF-8"
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -29,10 +44,25 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-		testImplementation 'io.rest-assured:rest-assured:5.3.2'
+	testImplementation 'io.rest-assured:rest-assured:5.3.2'
+	
 
 }
 
-tasks.named('test') {
-	useJUnitPlatform()
+test {
+    useJUnitPlatform()
+    systemProperty "allure.results.directory", "$buildDir/allure-results"
+    testLogging {
+        events "passed", "skipped", "failed"
+        exceptionFormat "full"
+        showCauses true
+        showExceptions true
+        showStackTraces true
+    }
+}
+
+allure {
+    version = '2.26.0'
+    autoconfigure = true
+    aspectjweaver = true
 }

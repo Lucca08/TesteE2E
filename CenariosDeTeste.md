@@ -1,4 +1,4 @@
-## Cenários de teste
+## Cenários de Teste
 ## Teste E2E Para Locatorio
 
 - CT001 - Deve retornar 201 ao criar um locatário

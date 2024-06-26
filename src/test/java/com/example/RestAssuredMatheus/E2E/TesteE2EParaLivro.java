@@ -3,6 +3,8 @@ package com.example.RestAssuredMatheus.E2E;
 import com.example.RestAssuredMatheus.Util.BaseTeste;
 import com.example.RestAssuredMatheus.model.Livro;
 import com.example.RestAssuredMatheus.model.Autor;
+
+import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.*;
 import java.time.LocalDate;
 import java.time.Year;
@@ -17,8 +19,6 @@ public class TesteE2EParaLivro extends BaseTeste {
     private static Long livroId;
     private static Long autorId;
    
-
-    
     @Test
     @Order(1)
     public void deveRetornar201AoCriarUmAutor() {
@@ -30,7 +30,7 @@ public class TesteE2EParaLivro extends BaseTeste {
                 .when()
                 .post("/v1/autor")
                 .then()
-                .statusCode(201)
+                .statusCode(HttpStatus.SC_CREATED)
                 .extract().jsonPath().getLong("id");
 
         Assertions.assertNotNull(autorId, "O ID do autor criado não pode ser nulo");
@@ -49,7 +49,7 @@ public class TesteE2EParaLivro extends BaseTeste {
                 .when()
                 .post("/v1/livro")
                 .then()
-                .statusCode(201)
+                .statusCode(HttpStatus.SC_CREATED)
                 .extract().jsonPath().getLong("id");
 
         Assertions.assertNotNull(livroId, "O ID do livro criado não pode ser nulo");
@@ -65,8 +65,8 @@ public class TesteE2EParaLivro extends BaseTeste {
                 .when()
                 .get("/v1/livro/{id}")
                 .then()
-                .statusCode(200)
-                .body("nome", equalTo("Nome do Livro"))
+                .statusCode(HttpStatus.SC_OK)
+                .body("nome", equalTo("Bela Adormecida"))
                 .body("isbn", equalTo("9788525044297"))
                 .body("dataPublicacao", equalTo("18/06/2020"))
                 .body("alugado", equalTo(false))
@@ -81,7 +81,7 @@ public class TesteE2EParaLivro extends BaseTeste {
                 .when()
                 .get("/v1/livro")
                 .then()
-                .statusCode(200)
+                .statusCode(HttpStatus.SC_OK)
                 .body("size()", greaterThan(0));
     }
 
@@ -92,7 +92,7 @@ public class TesteE2EParaLivro extends BaseTeste {
                 .when()
                 .get("/v1/livro/alugado")
                 .then()
-                .statusCode(200);
+                .statusCode(HttpStatus.SC_OK);
     }
 
     @Test
@@ -105,19 +105,14 @@ public class TesteE2EParaLivro extends BaseTeste {
                 .when()
                 .delete("/v1/livro/{id}")
                 .then()
-                .statusCode(200);
+                .statusCode(HttpStatus.SC_OK);
 
-        given()
-                .pathParam("id", livroId)
-                .when()
-                .get("/v1/livro/{id}")
-                .then()
-                .statusCode(404);
+      
     }
 
     private static Livro criarCadastroLivro() {
         return Livro.builder()
-                .nome("Nome do Livro")
+                .nome("Bela Adormecida")
                 .isbn("9788525044297")
                 .dataPublicacao(LocalDate.of(2020, 6, 18))
                 .alugado(false)

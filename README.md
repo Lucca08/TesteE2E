@@ -3,7 +3,8 @@
 
 ## Descrição
 
-Este projeto realiza testes automatizados E2E da aplicação biblioteca 
+Este projeto realiza testes automatizados E2E da aplicação biblioteca https://github.com/Mateusun1/LivrariaApi
+
 
 ## 1. Pré-requisitos
 
@@ -31,3 +32,21 @@ As dependências utilizadas neste projeto são:
 
 ## 4. Cenários de Testes
 
+[CenariosDeTeste](CenariosDeTeste.md)
+
+## 5. Rode os testes 
+
+1. Comando para rodar testes
+    ```bash
+    gradle test
+    ```
+
+## 6. Gerar Relatorio de Teste
+
+1. Gere o relatório Allure:
+    ```bash
+    allure serve allure-results
+    ```
+## 7. Relatório gerado pelo Allure:
+
+![Imagem do Relatório](src/main/resources/img/ReportAllure.png)

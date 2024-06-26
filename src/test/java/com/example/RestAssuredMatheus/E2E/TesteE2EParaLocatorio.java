@@ -2,6 +2,8 @@ package com.example.RestAssuredMatheus.E2E;
 
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+
+import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.*;
 import org.springframework.context.annotation.Description;
 
@@ -30,7 +32,7 @@ public class TesteE2EParaLocatorio extends BaseTeste {
                 .when()
                 .post("/v1/locatario")
                 .then()
-                .statusCode(201)
+                .statusCode(HttpStatus.SC_CREATED)
                 .extract().response();
 
         locatarioId = createResponse.jsonPath().getString("id");
@@ -46,7 +48,7 @@ public class TesteE2EParaLocatorio extends BaseTeste {
                 .when()
                 .get("/v1/locatario/{id}")
                 .then()
-                .statusCode(200)
+                .statusCode(HttpStatus.SC_OK)
                 .body("nome", equalTo("Matheus"))
                 .body("genero", equalTo("Masculino"))
                 .body("telefone", equalTo("1122223333"))
@@ -75,7 +77,7 @@ public class TesteE2EParaLocatorio extends BaseTeste {
                 .when()
                 .put("/v1/locatario/{id}")
                 .then()
-                .statusCode(200);
+                .statusCode(HttpStatus.SC_OK);
     }
 
     @Test
@@ -87,7 +89,7 @@ public class TesteE2EParaLocatorio extends BaseTeste {
                 .when()
                 .delete("/v1/locatario/{id}")
                 .then()
-                .statusCode(200);
+                .statusCode(HttpStatus.SC_OK);
     }
 
     private Locatario criarLocatario() {
